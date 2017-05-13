@@ -37,7 +37,7 @@ public class Nivel1 extends JPanel implements ActionListener ,KeyListener{
     private int secuencia = 0;
     private Color color;
     private ArrayList<Rectangle> nivel1;
-    private boolean direccion;
+       private boolean direccion;
 
     public Nivel1() {
         this.addKeyListener(this);
@@ -91,16 +91,21 @@ public class Nivel1 extends JPanel implements ActionListener ,KeyListener{
             g.drawRect( xr, yr, 60, 110);
             Rectangle r = new Rectangle(m + 10,  350, 90, 114);
             Rectangle m = new Rectangle(xr, yr, 60, 110);
-            if (r.intersects(m)) {
-                roberto.setColisiones(roberto.getColisiones() + 1);
+                       if (r.intersects(m)) {
+                           g.clearRect(xr, yr, 60, 110);
+                           roberto.setColisiones(roberto.getColisiones() + 1);
+                                
                 nivel1.add(m);
             }
+                
         }
-    for (Rectangle m : nivel1) {
-          circulos.remove(m);
-        }
+    
  
         /*
+        for (Rectangle m : nivel1) {
+          muertos.remove(m);
+          
+        }
         
               for (rec1 m : ni){
                     {re.re( m )
