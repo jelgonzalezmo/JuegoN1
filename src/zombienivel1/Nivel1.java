@@ -26,7 +26,8 @@ import javax.swing.Timer;
  *
  * @author Estudiante
  */
-public class Nivel1 extends JPanel implements ActionListener ,KeyListener{
+public class Nivel1 extends JPanel implements ActionListener, KeyListener {
+
     int x;
     int z;
     int m;
@@ -36,8 +37,9 @@ public class Nivel1 extends JPanel implements ActionListener ,KeyListener{
     private int Delay = 20;
     private int secuencia = 0;
     private Color color;
-    private ArrayList<Rectangle> nivel1;
-       private boolean direccion;
+    private ArrayList<Rectangle> nivel1 = new ArrayList<>();
+    private ArrayList<Rectangle> muertos = new ArrayList<>();
+    private boolean direccion;
 
     public Nivel1() {
         this.addKeyListener(this);
@@ -53,10 +55,10 @@ public class Nivel1 extends JPanel implements ActionListener ,KeyListener{
     public void llenarcirculos() {
         int iniX = 100;
         int iniY = 2;
-        Random r = new Random();
-        for (int i = 0; i < 40; i++) {
-            iniX += -z + Math.abs(r.nextInt() % 200);
-            iniY = Math.abs(r.nextInt()%5);
+        Random k = new Random();
+        for (int i = 0; i < 200; i++) {
+            iniX += -z + Math.abs(k.nextInt() % 150);
+            iniY = Math.abs(k.nextInt() % 15);
             this.circulos.add(new Circulos(iniX, iniY));
         }
     }
@@ -69,50 +71,52 @@ public class Nivel1 extends JPanel implements ActionListener ,KeyListener{
             for (int i = 0; i < x; i++) {
                 g.drawImage(fondo, -x + (i * 800), 0, 800, 500, this);
             }
-        }
-        Image zombie=CargarImagen("ZRunn.png");
-         
-        if (direccion) {
-            g.drawImage(zombie, m, 350, m + 100,  464,
-                    (this.secuencia * 322), 0, (this.secuencia * 322) + 322, 388, this);
-        } else {
-            g.drawImage(zombie, m + 100, 350, m, 464,
-                    (this.secuencia * 322), 0, (this.secuencia * 322) + 322, 388, this);
-           
-        }
-        g.drawRect(m + 10,  350, 90, 114);
-        Image meteorito = CargarImagen("meteorito.png");
-               g.drawString("Colisiones", 600, 30);
-        g.drawString(": " + roberto.getColisiones(), 670, 30);
-        for (int i = 0; i < 20; i++) {
-            int xr = -z + this.circulos.get(i).getX();
-            int yr = z + this.circulos.get(i).getY();
-            g.drawImage(meteorito, xr, yr, 60, 110, this);
-            g.drawRect( xr, yr, 60, 110);
-            Rectangle r = new Rectangle(m + 10,  350, 90, 114);
-            Rectangle m = new Rectangle(xr, yr, 60, 110);
-                       if (r.intersects(m)) {
-                           g.clearRect(xr, yr, 60, 110);
-                           roberto.setColisiones(roberto.getColisiones() + 1);
-                                
-                nivel1.add(m);
+
+            Image zombie = CargarImagen("ZRunn.png");
+
+            if (direccion) {
+                g.drawImage(zombie, m, 350, m + 100, 464,
+                        (this.secuencia * 322), 0, (this.secuencia * 322) + 322, 388, this);
+            } else {
+                g.drawImage(zombie, m + 100, 350, m, 464,
+                        (this.secuencia * 322), 0, (this.secuencia * 322) + 322, 388, this);
+
             }
-                
+            //g.drawRect(m + 17, 355, 75, 105);
+            Image meteorito = CargarImagen("meteorito.png");
+            g.drawString("Colisiones", 600, 30);
+            g.drawString(": " + roberto.getColisiones(), 670, 30);
+            int xr = 0;
+            int yr = 0;
+            for (int i = 0; i < 200; i++) {
+                Random l = new Random();
+                int in = Math.abs(l.nextInt() % 1000);
+                xr = -z + this.circulos.get(i).getX();
+                yr = z + this.circulos.get(i).getY();
+
+                if (this.circulos.get(i).getY() > 0) {
+                    this.circulos.get(i).setY(-in);
+                }
+
+               g.drawImage(meteorito, xr, yr, 60, 110, this);
+               g.drawRect(xr, yr, 50, 100);
+                Rectangle r = new Rectangle(m + 17, 355, 75, 105);
+                Rectangle mu = new Rectangle(xr, yr, 50, 100);
+                if (r.intersects(mu)) {
+                    roberto.setColisiones(roberto.getColisiones() + 1);
+                    muertos.add(mu);
+                }
+            }
+            for (Rectangle p : muertos) {
+                nivel1.remove(p);
+            }
+            muertos = new ArrayList<>();
+        } else {
+            Image a = CargarImagen("images.png");
+            g.drawImage(a, 0, 0, 800, 500, null);
         }
-    
- 
-        /*
-        for (Rectangle m : nivel1) {
-          muertos.remove(m);
-          
-        }
-        
-              for (rec1 m : ni){
-                    {re.re( m )
-                    }
-            }*/
-       
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         x += 2;
@@ -120,10 +124,6 @@ public class Nivel1 extends JPanel implements ActionListener ,KeyListener{
         repaint();
     }
 
-    public Rectangle bordeZombie() {
-        Rectangle bz = new Rectangle(m + 10,  350, 90, 114);
-        return bz;
-    }
     private Image CargarImagen(String imageName) {
         ImageIcon ii = new ImageIcon(imageName);
         Image image = ii.getImage();
@@ -132,7 +132,7 @@ public class Nivel1 extends JPanel implements ActionListener ,KeyListener{
 
     @Override
     public void keyTyped(KeyEvent e) {
-        }
+    }
 
     @Override
     public void keyPressed(KeyEvent ke) {
@@ -161,6 +161,6 @@ public class Nivel1 extends JPanel implements ActionListener ,KeyListener{
 
     @Override
     public void keyReleased(KeyEvent e) {
-        }
+    }
 
 }

@@ -14,8 +14,7 @@ import java.awt.Point;
 public class Circulos {
     private int x;
     private int y;
-    private int altot=108;
-    private int ancho=90;
+  
     
     public Circulos(int x, int y) {
         this.x = x;
